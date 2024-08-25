@@ -1,9 +1,9 @@
 #pragma once
 
+#include "domain.h"
 #include "svg.h"
 #include "geo.h"
 #include "json.h"
-#include "domain.h"
 #include "transport_catalogue.h"
 
 #include <algorithm>
@@ -12,21 +12,6 @@ namespace Render {
 
 inline const double EPSILON = 1e-6;
 bool IsZero(double value);
-
-struct RenderSettings {
-	double width = 0.0;
-	double height = 0.0;
-	double padding = 0.0;
-	double line_width = 0.0;
-	double stop_radius = 0.0;
-	int bus_label_font_size = 0;
-	svg::Point bus_label_offset = { 0.0, 0.0 };
-	int stop_label_font_size = 0;
-	svg::Point stop_label_offset = { 0.0, 0.0 };
-	svg::Color underlayer_color = { svg::NoneColor };
-	double underlayer_width = 0.0;
-	std::vector<svg::Color> color_palette {};
-};
 
 class SphereProjector {
 public:
@@ -52,6 +37,9 @@ private:
 class RoutesMap {
 public:
 	RoutesMap() = default;
+	RoutesMap(domain::IRequests* requests) {
+		requests->FillRenderSettings(*this);
+	}
 
 	void AppplySettings(domain::Settings& svg_settings);
 	

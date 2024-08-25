@@ -3,15 +3,17 @@
 #include <cassert>
 #include <deque>
 #include <iostream>
-#include <optional>
+#include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <unordered_map>
-#include <map>
 #include <unordered_set>
 #include <vector>
  
+#include "domain.h"
+#include "domain_requests.h"
 #include "geo.h"
 
 namespace Transport {
@@ -240,6 +242,9 @@ private:
 class Catalogue {
 public:
     explicit Catalogue() = default;
+    Catalogue(domain::IRequests* requests) {
+        requests->FillTransportCatalogue(*this);
+    };
 
     void AddStop(std::shared_ptr<Stop> stop);
     void AddBus(std::shared_ptr<Bus> bus);
@@ -255,9 +260,7 @@ public:
     void SetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b, size_t distance);
     size_t GetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b) const;
 
-    const SegmentsMap& GetSegmentsMap() const {
-        return segments_; 
-    }
+    const SegmentsMap& GetSegmentsMap() const;
 
     ~Catalogue() = default;
 

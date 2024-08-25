@@ -8,103 +8,93 @@ namespace json {
 
 const std::string TabSpace = "    "s;
 
-Node::Node() { 
-    value_ = nullptr;
-}
-
-Node::Node(std::nullptr_t) : value_(nullptr) {}
-
-Node::Node(int value) : value_(value) {}
-
-Node::Node(double value) : value_(value) {}
-
-Node::Node(bool value) : value_(value) {}
-
-Node::Node(std::string value) : value_(std::move(value)) {}
-
-Node::Node(std::vector<Node> array_) : value_(std::move(array_)) {}
-    
-Node::Node(std::map<std::string, Node> map_) : value_(std::move(map_)) {};
-
 bool Node::IsInt() const {
-    return std::holds_alternative<int>(value_);
+    return std::holds_alternative<int>(*this);
 };
 
 bool Node::IsDouble() const {
-    return std::holds_alternative<int>(value_) || std::holds_alternative<double>(value_);
+    return std::holds_alternative<int>(*this) || std::holds_alternative<double>(*this);
 }
 
 bool Node::IsPureDouble() const {
-    return std::holds_alternative<double>(value_) && !std::holds_alternative<int>(value_);
+    return std::holds_alternative<double>(*this) && !std::holds_alternative<int>(*this);
 }
 
 bool Node::IsBool() const {
-    return std::holds_alternative<bool>(value_);
+    return std::holds_alternative<bool>(*this);
 };
 
 bool Node::IsString() const {
-    return std::holds_alternative<std::string>(value_);
+    return std::holds_alternative<std::string>(*this);
 };
 
 bool Node::IsNull() const {
-    return std::holds_alternative<std::nullptr_t>(value_);
+    return std::holds_alternative<std::nullptr_t>(*this);
 };
 
 bool Node::IsArray() const {
-    return std::holds_alternative<Array>(value_);
+    return std::holds_alternative<Array>(*this);
 };
 
 bool Node::IsMap() const {
-    return std::holds_alternative<Dict>(value_);
+    return std::holds_alternative<Dict>(*this);
 }
 
 const Node::Value& Node::GetValue() const {
-    return value_;
+    return *this;
 }
 
 const Array& Node::AsArray() const {
     if (IsArray()) {
-        return std::get<Array>(value_);
+        return std::get<Array>(*this);
     }
     throw  std::logic_error("Not Array");
 }
 
 const Dict& Node::AsMap() const {
     if (IsMap()) {
-        return std::get<Dict>(value_);
+        return std::get<Dict>(*this);
     }
     throw  std::logic_error("Not Dict");
 }
 
 int Node::AsInt() const {
     if (IsInt()) {
-        return std::get<int>(value_);
+        return std::get<int>(*this);
     }
     throw  std::logic_error("Not int");
 }
 
 const string& Node::AsString() const {
     if (IsString()) {
-        return std::get<string>(value_);
+        return std::get<string>(*this);
     }
     throw  std::logic_error("Not string");
 }
 
 bool Node::AsBool() const {
     if (IsBool()) {
-        return std::get<bool>(value_);
+        return std::get<bool>(*this);
     }
     throw std::logic_error("Not bool");
 }
 
 double Node::AsDouble() const {
-    if (std::holds_alternative<double>(value_)) {
-        return std::get<double>(value_);
+    if (std::holds_alternative<double>(*this)) {
+        return std::get<double>(*this);
     }
-    if (std::holds_alternative<int>(value_)) {
-        return static_cast<double>(std::get<int>(value_));
+    if (std::holds_alternative<int>(*this)) {
+        return static_cast<double>(std::get<int>(*this));
     }
     throw std::logic_error("Not double");
+}
+
+bool Node::operator==(const Node& other) const {
+    return GetValue() == other.GetValue();
+}
+
+bool Node::operator!=(const Node& other) const {
+    return !(*this == other);
 }
 
 namespace {

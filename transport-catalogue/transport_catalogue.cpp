@@ -157,11 +157,6 @@ RouteType Bus::GetType() const {
 void Bus::AddStop(std::shared_ptr<Stop> stop) {
     unique_stops_.insert(stop);
     RouteNode* new_node = new RouteNode(stop);
-    // std::cout << "============== Start Add Stop ==================" << std::endl;
-    // std::cout << "==== Stop name: " << stop->GetName() << std::endl;
-    // std::cout << "==== Full length before: " << full_length_ << std::endl;
-    // std::cout << "==== Straight length before: " << length_ << std::endl;
-    // std::cout << "==== Distance " << catalogue_.GetDistance(end_->stop, stop) << std::endl;
     if (size_ == 0) {
         start_ = new_node;
         end_ = new_node;
@@ -180,10 +175,6 @@ void Bus::AddStop(std::shared_ptr<Stop> stop) {
         end_ = new_node;
     }
     last_stop_ = stop;
-    // std::cout << "==== Full length after: " << full_length_ << std::endl;
-    // std::cout << "==== Straight length after: " << length_ << std::endl;
-    // std::cout << "==== Size after: " << size_ << std::endl;
-    // std::cout << "================ End Add Stop ==================" << std::endl;
     std::shared_ptr<Bus> shared_this = shared_from_this();
     stop->AddBus(std::shared_ptr<Bus>(shared_this));
     ++size_;
@@ -299,6 +290,9 @@ size_t Catalogue::GetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<S
     }
     // Расстояние до самой себя по-умолчанию
     return 0;
+}
+const Transport::SegmentsMap& Catalogue::GetSegmentsMap() const {
+    return segments_; 
 }
 
 } // end Transport

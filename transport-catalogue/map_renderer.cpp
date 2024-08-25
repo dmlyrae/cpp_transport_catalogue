@@ -84,7 +84,7 @@ void RoutesMap::AppplySettings(domain::Settings& svg_settings) {
 
 std::vector<svg::Polyline> RoutesMap::GetRouteLines(const Transport::BusesDictionary& buses, const SphereProjector& sphere_projector) const {
     std::vector<svg::Polyline> result;
-    size_t color_num = 0;
+    int color_num = 0;
     for (const auto& [ bus_name, bus ] : buses) {
         if (bus->IsEmpty()) {
             continue;
@@ -150,7 +150,7 @@ void RoutesMap::FillSVG(svg::Document& svg, const Transport::Catalogue& catalogu
 
 std::vector<svg::Text> RoutesMap::GetBusLabel(const Transport::BusesDictionary& buses, const SphereProjector& sp) const {
     std::vector<svg::Text> result;
-    size_t color_num = 0;
+    int color_num = 0;
     for (const auto& [bus_number, bus] : buses) {
         if (bus->IsEmpty()) {
             continue;

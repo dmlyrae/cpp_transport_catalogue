@@ -1,25 +1,28 @@
-#include <iostream>
 #include <cassert>
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 
+#include "domain.h"
+#include "domain_render.h"
+#include "domain_responses.h"
+#include "domain_requests.h"
+#include "domain_transport.h"
+#include "map_renderer.h"
 #include "request_handler.h"
 #include "transport_catalogue.h"
-#include "map_renderer.h"
 #include "svg.h"
 
 using namespace std;
 
 int main() {
 
-    Transport::Catalogue catalogue;
-    IO::RequestHandler request_handler;
-    request_handler.ParseJSON(std::cin);
-    request_handler.ApplyBaseCommands(catalogue);
-    Render::RoutesMap routes_map;
-    request_handler.ApplyRenderSettings(routes_map);
-    request_handler.ApplyStatCommands(catalogue, routes_map);
+    domain::JsonRequests requests(std::cin);
+    Transport::Catalogue catalogue = RequestHandler::CreateCatalogue(&requests);
+    Render::RoutesMap routes_map = RequestHandler::CreateRoutesMap(&requests, catalogue);
+    domain::JsonResponses responses = RequestHandler::CreateResponses<domain::JsonResponses>(&requests, catalogue, routes_map);
+    responses.Print(std::cout);
 
     return 0;
 }
