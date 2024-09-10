@@ -13,14 +13,14 @@ namespace domain {
     * Сущность "Запрос"
     */
     int Stat::GetRequestId() const {
-        return node_->AsMap().at("id").AsInt();
+        return node_->AsDict().at("id").AsInt();
     }
 
     std::string Stat::GetName() const {
         if (GetType() == "Map") {
             throw std::logic_error("Not map");
         }
-        return node_->AsMap().at("name").AsString();
+        return node_->AsDict().at("name").AsString();
     }
 
     /*
@@ -31,8 +31,8 @@ namespace domain {
 
     std::pair<std::vector<BusEntity>, std::vector<StopEntity>> JsonRequests::GetBase() const {
         std::pair<std::vector<BusEntity>, std::vector<StopEntity>> base;
-        for(const json::Node& node : base_document_.GetRoot().AsMap().at("base_requests").AsArray()) {
-            if (node.AsMap().at("type").AsString() == "Stop") {
+        for(const json::Node& node : base_document_.GetRoot().AsDict().at("base_requests").AsArray()) {
+            if (node.AsDict().at("type").AsString() == "Stop") {
                 base.second.emplace_back(node);
             } else {
                 base.first.emplace_back(node);
@@ -43,14 +43,14 @@ namespace domain {
 
     std::vector<Stat> JsonRequests::GetStats() const {
         std::vector<Stat> stat_requests;  
-        for(const json::Node& node : base_document_.GetRoot().AsMap().at("stat_requests").AsArray()) {
+        for(const json::Node& node : base_document_.GetRoot().AsDict().at("stat_requests").AsArray()) {
             stat_requests.emplace_back(node);
         }
         return stat_requests;
     };
 
     Settings JsonRequests::GetRenderSettings() const {
-        return base_document_.GetRoot().AsMap().at("render_settings");
+        return base_document_.GetRoot().AsDict().at("render_settings");
     };
 
     void JsonRequests::FillTransportCatalogue(Transport::Catalogue& catalogue) const {

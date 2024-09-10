@@ -6,26 +6,26 @@ namespace domain {
     * Сущность "Автобус"
     */
     const json::Array& BusEntity::GetStops() const {
-        return node_->AsMap().at("stops").AsArray(); 
+        return node_->AsDict().at("stops").AsArray(); 
     } 
 
     bool BusEntity::IsRoundtrip() const {
-        return node_->AsMap().at("is_roundtrip").AsBool(); 
+        return node_->AsDict().at("is_roundtrip").AsBool(); 
     }
 
     /*
     * Сущность "Остановка"
     */
     const json::Dict& StopEntity::GetDistances() const { 
-        return node_->AsMap().at("road_distances").AsMap(); 
+        return node_->AsDict().at("road_distances").AsDict(); 
     }
 
     double StopEntity::GetLongitude() const { 
-        return node_->AsMap().at("longitude").AsDouble(); 
+        return node_->AsDict().at("longitude").AsDouble(); 
     }
 
     double StopEntity::GetLatitude() const { 
-        return node_->AsMap().at("latitude").AsDouble(); 
+        return node_->AsDict().at("latitude").AsDouble(); 
     }
 
 }

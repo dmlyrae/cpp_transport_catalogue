@@ -2,6 +2,7 @@
 #include "set"
 
 #include "json.h"
+#include "json_builder.h"
 #include "svg.h"
 
 namespace domain {

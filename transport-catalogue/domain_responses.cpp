@@ -3,6 +3,7 @@
 
 #include "domain_responses.h"
 #include "json.h"
+#include "json_builder.h"
 #include "svg.h"
 
 namespace domain {
@@ -10,10 +11,17 @@ namespace domain {
     * Класс ответов через JSON 
     */
 
-    JsonResponses::JsonResponses () : responses_({}) {};
+   JsonResponses::JsonResponses () : responses_({}) {};
 
     void JsonResponses::Print(std::ostream& out) const {
-        json::Print(json::Document{ responses_ }, out);
+        json::Print(
+            json::Document(
+                json::Builder{}
+                .Value(responses_)
+                .Build()
+            ),
+            out
+        );
     }
 
     void JsonResponses::PushBusResponse(
@@ -23,48 +31,78 @@ namespace domain {
         int stop_count,
         int unique_stop_count
     ) {
-        json::Dict result;
-        result["request_id"] = request_id;
-        result["curvature"] = curvature;
-        result["route_length"] = route_length;
-        result["stop_count"] = stop_count;
-        result["unique_stop_count"] = unique_stop_count;
-        responses_.push_back(result);
+        responses_.push_back(
+            json::Builder{}
+                .StartDict()
+                    .Key("request_id").Value(request_id)
+                    .Key("curvature").Value(curvature)
+                    .Key("route_length").Value(route_length)
+                    .Key("stop_count").Value(stop_count)
+                    .Key("unique_stop_count").Value(unique_stop_count)
+                .EndDict()
+                .Build()
+        );
     };
 
     void JsonResponses::PushStopResponse(
         int request_id,
         const std::set<std::string_view>& bus_names 
     ) {
-        json::Dict result;
-        json::Array buses;
-        result["request_id"] = request_id;
+        json::Builder buses_builder;
+        auto buses = buses_builder.StartArray();
+
         for (auto& bus : bus_names) {
-            buses.push_back(std::string(bus));
+            buses.Value(std::string(bus));
         }
-        result["buses"] = buses;
-        responses_.push_back(result);
+
+        responses_.push_back(
+                json::Builder{}
+                    .StartDict()
+                        .Key("request_id").Value(request_id)
+                        .Key("buses").Value(
+                                buses
+                                    .EndArray()
+                                    .Build()
+                                    .GetValue()
+                            )
+                    .EndDict()
+                    .Build()
+            );
     };
 
     void JsonResponses::PushMapResponse(
         int request_id,
         const svg::Document& svg
     ) {
-        json::Dict result;
         std::ostringstream strm;
         svg.Render(strm);
-        result["map"] = strm.str();
-        result["request_id"] = request_id;
-        responses_.push_back(result);
+        responses_.push_back(
+            json::Builder{}
+                .StartDict()
+                    .Key("map")
+                    .Value(strm.str())
+                    .Key("request_id")
+                    .Value(request_id)
+                .EndDict()
+                .Build()
+            );
     };
 
     void JsonResponses::PushNotFoundResponse(int request_id) {
         json::Dict result;
         result["request_id"] = request_id;
         result["error_message"] = "not found";
-        responses_.push_back(result);
+        responses_.push_back(
+            json::Builder{}
+                .StartDict()
+                    .Key("request_id")
+                    .Value(request_id)
+                    .Key("error_message")
+                    .Value("not found")
+                .EndDict()
+                .Build()
+
+        );
     }
-
-
 
 }

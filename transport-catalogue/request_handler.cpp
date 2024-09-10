@@ -15,7 +15,7 @@ namespace RequestHandler {
         return { requests_ptr };
     }
 
-    Render::RoutesMap CreateRoutesMap(domain::IRequests* requests_ptr, Transport::Catalogue catalogue) {
+    Render::RoutesMap CreateRoutesMap(domain::IRequests* requests_ptr) {
         return { requests_ptr };
     }
 

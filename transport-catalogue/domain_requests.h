@@ -4,6 +4,7 @@
 #include "domain_transport.h"
 #include "domain_render.h"
 #include "json.h"
+#include "json_builder.h"
 
 namespace Transport {
     class Stop;
@@ -54,5 +55,4 @@ namespace domain {
     private:
         json::Document base_document_;
     };
-
 }

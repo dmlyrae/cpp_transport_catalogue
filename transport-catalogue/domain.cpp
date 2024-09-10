@@ -18,19 +18,19 @@ namespace domain {
     }
 
     std::string BaseEntity::GetType() const {
-        return node_->AsMap().at("type").AsString();
+        return node_->AsDict().at("type").AsString();
     }
 
     bool BaseEntity::IsStop() const {
-        return node_->AsMap().at("type").AsString() == "Stop";
+        return node_->AsDict().at("type").AsString() == "Stop";
     }
 
     bool BaseEntity::IsBus() const {
-        return node_->AsMap().at("type").AsString() == "Bus";
+        return node_->AsDict().at("type").AsString() == "Bus";
     }
 
     bool BaseEntity::IsMap() const {
-        return node_->AsMap().at("type").AsString() == "Map";
+        return node_->AsDict().at("type").AsString() == "Map";
     }
 
     const json::Node* BaseEntity::GetNode() const {
@@ -38,7 +38,7 @@ namespace domain {
     }
 
     const std::string& Entity::GetName() const { 
-        return node_->AsMap().at("name").AsString(); 
+        return node_->AsDict().at("name").AsString(); 
     }
 
 } // end domain

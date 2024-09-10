@@ -15,7 +15,7 @@ namespace RequestHandler {
 
     Transport::Catalogue CreateCatalogue(domain::IRequests* requests_ptr);
     
-    Render::RoutesMap CreateRoutesMap(domain::IRequests* requests_ptr, Transport::Catalogue catalogue);
+    Render::RoutesMap CreateRoutesMap(domain::IRequests* requests_ptr);
 
     template<typename T>
     T CreateResponses(const domain::IRequests* request_ptr, Transport::Catalogue catalogue, Render::RoutesMap routes_map) {
