@@ -32,4 +32,12 @@ namespace domain {
         double GetLatitude() const;
     };
 
+    /* Настройка маршрутов */
+    class RouterSettings : public BaseEntity {
+    public:
+        using BaseEntity::BaseEntity;
+        int GetBusWaitTime() const; 
+        int GetBusVelocity() const; 
+    };
+
 }

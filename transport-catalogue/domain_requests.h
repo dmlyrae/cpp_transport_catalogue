@@ -10,6 +10,7 @@ namespace Transport {
     class Stop;
     class Bus;
     class Catalogue;
+    class RouterA;
 }
 
 namespace domain {
@@ -27,6 +28,8 @@ namespace domain {
     public:
         virtual void FillTransportCatalogue(Transport::Catalogue& catalogue) const = 0;
         virtual void FillRenderSettings(Render::RoutesMap& routes_map) const = 0;
+        virtual void FillRouterSettings(Transport::RouterA& router) const = 0;
+        virtual RouterSettings GetRouterSettings() const = 0;
         virtual void FillStatResponses(
             domain::IStatResponses& responses, 
             const Transport::Catalogue& catalogue,
@@ -38,13 +41,15 @@ namespace domain {
     /* Класс запросов через JSON */
     class JsonRequests : public IRequests  {
     public:
-        explicit JsonRequests (std::istream& input);
+        explicit JsonRequests(std::istream& input);
 
         std::pair<std::vector<BusEntity>, std::vector<StopEntity>> GetBase() const;
         std::vector<Stat> GetStats() const;
         Settings GetRenderSettings() const;
+        RouterSettings GetRouterSettings() const;
 
         void FillTransportCatalogue(Transport::Catalogue& catalogue) const override;
+        void FillRouterSettings(Transport::RouterA& router) const override;
         void FillRenderSettings(Render::RoutesMap& routes_map) const override;
         void FillStatResponses(
             domain::IStatResponses& responses, 

@@ -6,6 +6,7 @@
 #include "domain_transport.h"
 #include "json.h"
 #include "map_renderer.h"
+#include "transport_router.h"
 
 namespace domain {
 
@@ -53,11 +54,17 @@ namespace domain {
         return base_document_.GetRoot().AsDict().at("render_settings");
     };
 
+    domain::RouterSettings JsonRequests::GetRouterSettings() const {
+        return base_document_.GetRoot()
+            .AsDict()
+            .at("routing_settings");
+    };
+
     void JsonRequests::FillTransportCatalogue(Transport::Catalogue& catalogue) const {
         using namespace std::literals;
 
         std::pair<std::vector<domain::BusEntity>, std::vector<domain::StopEntity>> base_requests = GetBase();
-        std::vector<std::tuple<std::string, std::string, size_t>> parsed_distances;
+        std::vector<std::tuple<std::string, std::string, std::size_t>> parsed_distances;
 
         /*
         * Создание остановок
@@ -68,7 +75,7 @@ namespace domain {
             std::shared_ptr<Transport::Stop> stop_ptr = std::make_shared<Transport::Stop>(stop_name, coordinates);
             json::Dict distances = request.GetDistances();
             for (auto& [ adjacent_stop_name, node_distance ] : distances) {
-                size_t distance = static_cast<int>(node_distance.AsInt());
+                std::size_t distance = static_cast<int>(node_distance.AsInt());
                 stop_ptr->AddAdjacent( adjacent_stop_name, distance );
                 parsed_distances.emplace_back(stop_name, adjacent_stop_name, distance);
             }

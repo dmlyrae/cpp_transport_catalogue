@@ -23,6 +23,18 @@ namespace RequestHandler {
         T stat_responses;
         request_ptr->FillStatResponses(stat_responses, catalogue, routes_map);
         return stat_responses;
-    }
+    };
+
+    Transport::RouterA CreateRouterAAA(domain::IRequests* requests_ptr, Transport::Catalogue catalogue);
+
+    // Transport::Router CreateR(domain::IRequests* req_ptr, Transport::Catalogue cat) {
+    //     domain::RouterSettings settings = req_ptr->GetRouterSettings();
+    //     Transport::Router router = Transport::RouterCreator()
+    //         .SetCatalogue(cat)
+    //         .SetSettings(settings)
+    //         .Build();
+    //     return router;
+    // }
+
 
 } // end RequestHandler 

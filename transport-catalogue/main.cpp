@@ -13,6 +13,7 @@
 #include "request_handler.h"
 #include "svg.h"
 #include "transport_catalogue.h"
+#include "transport_router.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ int main() {
     Transport::Catalogue catalogue = RequestHandler::CreateCatalogue(&requests);
     Render::RoutesMap routes_map = RequestHandler::CreateRoutesMap(&requests);
     domain::JsonResponses responses = RequestHandler::CreateResponses<domain::JsonResponses>(&requests, catalogue, routes_map);
+    Transport::RouterA router = RequestHandler::CreateRouterAAA(&requests, catalogue);
     responses.Print(std::cout);
 
     return 0;

@@ -32,15 +32,15 @@ struct RoadMapSegment {
 };
 
 struct RoadMapSegmentHasher {
-    size_t operator()(const RoadMapSegment& stop_pair) const;
+    std::size_t operator()(const RoadMapSegment& stop_pair) const;
 };
 
-using SegmentsMap = std::unordered_map<RoadMapSegment, size_t, RoadMapSegmentHasher>;
+using SegmentsMap = std::unordered_map<RoadMapSegment, std::size_t, RoadMapSegmentHasher>;
 using StopsDictionary = std::map<std::string_view, std::shared_ptr<Stop>>;
 using BusesDictionary = std::map<std::string_view, std::shared_ptr<Bus>>;
 
 struct BusHasher {
-    size_t operator()(const std::weak_ptr<Bus>& bus) const; 
+    std::size_t operator()(const std::weak_ptr<Bus>& bus) const; 
 };
 
 struct BusComparator {
@@ -71,9 +71,9 @@ public:
 
     void AddBus(std::shared_ptr<Bus> bus);
 
-    void AddAdjacent(std::string_view stop, size_t& distance);
-    size_t GetDistanceTo(const Stop* adjacent_stop) const;
-    size_t GetDistanceTo(std::string_view stop_name) const;
+    void AddAdjacent(std::string_view stop, std::size_t& distance);
+    std::size_t GetDistanceTo(const Stop* adjacent_stop) const;
+    std::size_t GetDistanceTo(std::string_view stop_name) const;
 
     const std::set<std::string_view>& GetBusNames() const;
 
@@ -81,12 +81,12 @@ private:
     std::string name_;
     Geo::Coordinates coordinates_;
     StopsBuses unique_buses_;
-    std::unordered_map<std::string_view, size_t> distance_to_adjacent_stops_;
+    std::unordered_map<std::string_view, std::size_t> distance_to_adjacent_stops_;
     std::set<std::string_view> sorted_bus_names_;
 };
 
 struct StopHasher {
-    size_t operator()(const std::weak_ptr<Stop>& stop) const;
+    std::size_t operator()(const std::weak_ptr<Stop>& stop) const;
 };
 
 struct StopEqual {
@@ -201,7 +201,7 @@ public:
 
     bool IsEmpty() const;
 
-    size_t GetSize() const;
+    std::size_t GetSize() const;
 
     std::vector<std::weak_ptr<Stop>> GetUniqueStops();
 
@@ -211,9 +211,9 @@ public:
 
     RouteType GetType() const;
 
-    size_t GetRouteLength() const ;
-    size_t GetRouteSize() const;
-    size_t GetUniqueStopsSize();
+    std::size_t GetRouteLength() const ;
+    std::size_t GetRouteSize() const;
+    std::size_t GetUniqueStopsSize();
     const std::string& GetName() const;
 
     ~Bus() {
@@ -229,7 +229,7 @@ private:
     std::string name_;
     RouteType type_;
     RouteNode* current_;
-    size_t size_ = 0;
+    std::size_t size_ = 0;
     double length_ = 0;
     double full_length_ = 0;
     RouteNode* start_ = nullptr;
@@ -254,11 +254,11 @@ public:
     const BusesDictionary& GetAllBuses() const;
     const StopsDictionary& GetAllStops() const;
 
-    void SetDistance(std::string_view stop_a, std::string_view stop_b, size_t distance);
-    size_t GetDistance(std::string_view stop_a, std::string_view stop_b);
+    void SetDistance(std::string_view stop_a, std::string_view stop_b, std::size_t distance);
+    std::size_t GetDistance(std::string_view stop_a, std::string_view stop_b);
 
-    void SetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b, size_t distance);
-    size_t GetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b) const;
+    void SetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b, std::size_t distance);
+    std::size_t GetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b) const;
 
     const SegmentsMap& GetSegmentsMap() const;
 

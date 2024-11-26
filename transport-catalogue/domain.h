@@ -34,6 +34,11 @@ namespace Transport {
     class Stop;
     class Bus;
     class Catalogue;
+
+    struct RouterSettings {
+        int bus_wait_time;
+        int bus_velocity;
+    };
 }
 
 namespace domain {

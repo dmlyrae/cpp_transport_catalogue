@@ -8,6 +8,7 @@
 #include "map_renderer.h"
 #include "request_handler.h"
 #include "transport_catalogue.h"
+#include "transport_router.h"
 
 namespace RequestHandler {
 
@@ -17,6 +18,15 @@ namespace RequestHandler {
 
     Render::RoutesMap CreateRoutesMap(domain::IRequests* requests_ptr) {
         return { requests_ptr };
+    }
+
+    Transport::RouterA CreateRouterAAA(domain::IRequests* requests_ptr, Transport::Catalogue catalogue) {
+        domain::RouterSettings settings = requests_ptr->GetRouterSettings();
+        Transport::RouterA router = Transport::RouterCreator()
+            .SetCatalogue(catalogue)
+            .SetSettings(settings)
+            .Build();
+        return router;
     }
 
 } // end RequestHandler 

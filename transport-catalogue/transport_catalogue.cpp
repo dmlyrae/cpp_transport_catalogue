@@ -50,20 +50,20 @@ void Stop::AddBus(std::shared_ptr<Bus> bus) {
     }
 }
 
-void Stop::AddAdjacent(std::string_view stop_name, size_t& distance) {
+void Stop::AddAdjacent(std::string_view stop_name, std::size_t& distance) {
     if (!distance_to_adjacent_stops_.count(stop_name)) {
         distance_to_adjacent_stops_[stop_name] = distance;
     }
 }
 
-size_t Stop::GetDistanceTo(std::string_view stop_name) const {
+std::size_t Stop::GetDistanceTo(std::string_view stop_name) const {
     if (distance_to_adjacent_stops_.count(stop_name)) {
         return distance_to_adjacent_stops_.at(stop_name);
     }
     return 0;
 }
 
-size_t Stop::GetDistanceTo(const Stop* adjacent_stop) const {
+std::size_t Stop::GetDistanceTo(const Stop* adjacent_stop) const {
     if (distance_to_adjacent_stops_.count(adjacent_stop->GetName())) {
         return distance_to_adjacent_stops_.at(adjacent_stop->GetName());
     }
@@ -74,7 +74,7 @@ const std::set<std::string_view>& Stop::GetBusNames() const {
     return sorted_bus_names_;
 }
 
-size_t StopHasher::operator()(const std::weak_ptr<Stop>& stop_ptr) const {
+std::size_t StopHasher::operator()(const std::weak_ptr<Stop>& stop_ptr) const {
     if (auto shared_stop = stop_ptr.lock()) {
         return std::hash<std::string>{}(shared_stop->GetName());
     } 
@@ -99,7 +99,7 @@ bool RoadMapSegment::operator==(const RoadMapSegment& other) const {
     return a.lock()->GetName() == other.a.lock()->GetName() && b.lock()->GetName() == other.b.lock()->GetName();
 }
 
-size_t RoadMapSegmentHasher::operator()(const RoadMapSegment& stop_pair) const {
+std::size_t RoadMapSegmentHasher::operator()(const RoadMapSegment& stop_pair) const {
     std::hash<std::string> hasher;
     return hasher(std::string(stop_pair.a.lock()->GetName())) + hasher(std::string(stop_pair.b.lock()->GetName())) * 10;
 };
@@ -138,7 +138,7 @@ Bus::Bus(std::string name, RouteType type, const Catalogue& catalogue) :
     return RouteIterator{nullptr};
 }
 
-size_t Bus::GetSize() const {
+std::size_t Bus::GetSize() const {
     return size_;
 }
 
@@ -184,11 +184,11 @@ double Bus::GetCurvature() {
     return static_cast<double>(full_length_/length_); 
 }
 
-size_t Bus::GetRouteSize() const {
+std::size_t Bus::GetRouteSize() const {
     return type_ == RouteType::Line ? (size_ * 2) - 1 : size_;
 }
 
-size_t Bus::GetRouteLength() const {
+std::size_t Bus::GetRouteLength() const {
     return full_length_;
 }
 
@@ -196,11 +196,11 @@ bool Bus::IsEmpty() const {
     return size_ == 0; 
 }
 
-size_t Bus::GetUniqueStopsSize() {
+std::size_t Bus::GetUniqueStopsSize() {
     return unique_stops_.size();
 };
 
-inline size_t Transport::BusHasher::operator()(const std::weak_ptr<Bus>& bus) const {
+inline std::size_t Transport::BusHasher::operator()(const std::weak_ptr<Bus>& bus) const {
     if (auto shared_bus = bus.lock()) {
         return std::hash<std::string>{}(shared_bus->GetName());
     }
@@ -261,7 +261,7 @@ const StopsDictionary& Catalogue::GetAllStops() const {
     return stops_dictionary_;
 }
 
-void Catalogue::SetDistance(std::string_view stop_a_name, std::string_view stop_b_name, size_t distance) {
+void Catalogue::SetDistance(std::string_view stop_a_name, std::string_view stop_b_name, std::size_t distance) {
     std::shared_ptr<Stop> stop_a = GetStop(stop_a_name);
     std::shared_ptr<Stop> stop_b = GetStop(stop_b_name);
     stop_a->AddAdjacent(stop_b->GetName(), distance);
@@ -269,17 +269,17 @@ void Catalogue::SetDistance(std::string_view stop_a_name, std::string_view stop_
     SetDistance(std::weak_ptr(stop_a), std::weak_ptr(stop_b), distance);
 }
 
-void Catalogue::SetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b, size_t distance) {
+void Catalogue::SetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b, std::size_t distance) {
     segments_[{a, b}] = distance; 
 }
 
-size_t Catalogue::GetDistance(std::string_view stop_a_name, std::string_view stop_b_name) {
+std::size_t Catalogue::GetDistance(std::string_view stop_a_name, std::string_view stop_b_name) {
     std::shared_ptr<Stop> stop_a = GetStop(stop_a_name);
     std::shared_ptr<Stop> stop_b = GetStop(stop_b_name);
     return stop_a->GetDistanceTo(stop_b.get());
 }
 
-size_t Catalogue::GetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b) const {
+std::size_t Catalogue::GetDistance(const std::weak_ptr<Stop> a, const std::weak_ptr<Stop> b) const {
     RoadMapSegment segment{a, b};
     if (segments_.count(segment)) {
         return segments_.at(segment);
