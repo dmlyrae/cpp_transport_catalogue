@@ -12,7 +12,9 @@
             "program": "${workspaceFolder}/main",
             "args": [
                 "<",
-                "${workspaceFolder}/test_data/input1.json"
+                "${workspaceFolder}/test_data/s12_final_opentest_1.json",
+                ">",
+                "${workspaceFolder}/test_data/s12_final_opentest_1_ouput.json"
             ],
             "MIMode": "gdb",
             "preLaunchTask": "build",

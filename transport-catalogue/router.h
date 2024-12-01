@@ -103,8 +103,6 @@ std::optional<typename Router<Weight>::RouteInfo> Router<Weight>::BuildRoute(
     VertexId from,
     VertexId to
 ) const {
-    std::cout << "vertex  from " << from << "vertex to" << to << std::endl;
-    // std::cout << "not found" << std::endl;
     const auto& route_internal_data = routes_internal_data_.at(from).at(to);
     if (!route_internal_data) {
         return std::nullopt;

@@ -36,6 +36,7 @@ const graph::DirectedWeightedGraph<double>& RouterA::BuildGraph(const Transport:
 				stops.push_back(routeIt->stop);
 				routeIt = routeIt->next;
 			}
+			stops.push_back(routeIt->stop);
 			size_t stops_count = stops.size();
 			for (size_t i = 0; i < stops_count; ++i) {
 				for (size_t j = i + 1; j < stops_count; ++j) {
