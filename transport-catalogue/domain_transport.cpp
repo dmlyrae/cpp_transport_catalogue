@@ -28,4 +28,15 @@ namespace domain {
         return node_->AsDict().at("latitude").AsDouble(); 
     }
 
+    /*
+    * Сущность "Настройка маршрутов"
+    */
+    int RouterSettings::GetBusWaitTime() const { 
+        return node_->AsDict().at("bus_wait_time").AsInt(); 
+    }
+
+    int RouterSettings::GetBusVelocity() const { 
+        return node_->AsDict().at("bus_velocity").AsInt(); 
+    }
+
 }

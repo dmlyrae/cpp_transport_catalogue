@@ -29,6 +29,10 @@ namespace domain {
         return node_->AsDict().at("type").AsString() == "Bus";
     }
 
+    bool BaseEntity::IsRoute() const {
+        return node_->AsDict().at("type").AsString() == "Route";
+    }
+
     bool BaseEntity::IsMap() const {
         return node_->AsDict().at("type").AsString() == "Map";
     }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "graph.h"
+#include <iostream>
 
 #include <algorithm>
 #include <cassert>
@@ -58,8 +59,10 @@ private:
         auto& route_relaxing = routes_internal_data_[vertex_from][vertex_to];
         const Weight candidate_weight = route_from.weight + route_to.weight;
         if (!route_relaxing || candidate_weight < route_relaxing->weight) {
-            route_relaxing = { candidate_weight,
-                                route_to.prev_edge ? route_to.prev_edge : route_from.prev_edge };
+            route_relaxing = { 
+                candidate_weight,
+                route_to.prev_edge ? route_to.prev_edge : route_from.prev_edge 
+            };
         }
     }
 
@@ -78,7 +81,8 @@ private:
     static constexpr Weight ZERO_WEIGHT{};
     const Graph& graph_;
     RoutesInternalData routes_internal_data_;
-};
+
+}; // end Router
 
 template <typename Weight>
 Router<Weight>::Router(const Graph& graph)
@@ -95,18 +99,23 @@ Router<Weight>::Router(const Graph& graph)
 }
 
 template <typename Weight>
-std::optional<typename Router<Weight>::RouteInfo> Router<Weight>::BuildRoute(VertexId from,
-    VertexId to) const {
+std::optional<typename Router<Weight>::RouteInfo> Router<Weight>::BuildRoute(
+    VertexId from,
+    VertexId to
+) const {
+    std::cout << "vertex  from " << from << "vertex to" << to << std::endl;
+    // std::cout << "not found" << std::endl;
     const auto& route_internal_data = routes_internal_data_.at(from).at(to);
     if (!route_internal_data) {
         return std::nullopt;
     }
     const Weight weight = route_internal_data->weight;
     std::vector<EdgeId> edges;
-    for (std::optional<EdgeId> edge_id = route_internal_data->prev_edge;
+    for (
+        std::optional<EdgeId> edge_id = route_internal_data->prev_edge;
         edge_id;
-        edge_id = routes_internal_data_[from][graph_.GetEdge(*edge_id).from]->prev_edge)
-    {
+        edge_id = routes_internal_data_[from][graph_.GetEdge(*edge_id).from]->prev_edge
+    ) {
         edges.push_back(*edge_id);
     }
     std::reverse(edges.begin(), edges.end());

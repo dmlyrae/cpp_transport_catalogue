@@ -33,7 +33,8 @@ namespace domain {
         virtual void FillStatResponses(
             domain::IStatResponses& responses, 
             const Transport::Catalogue& catalogue,
-            const Render::RoutesMap& routes_map
+            const Render::RoutesMap& routes_map,
+            const Transport::RouterA& router
         ) const = 0;
         virtual ~IRequests() = default;
     };
@@ -54,7 +55,8 @@ namespace domain {
         void FillStatResponses(
             domain::IStatResponses& responses, 
             const Transport::Catalogue& catalogue,
-            const Render::RoutesMap& routes_map
+            const Render::RoutesMap& routes_map,
+            const Transport::RouterA& router
         ) const override;
 
     private:

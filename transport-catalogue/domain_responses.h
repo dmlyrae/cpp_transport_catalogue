@@ -7,6 +7,7 @@
 
 namespace domain {
 
+
     /* Интерфейс класса oтветов */
     class IStatResponses {
     public:
@@ -27,6 +28,12 @@ namespace domain {
         virtual void PushMapResponse(
             int request_id,
             const svg::Document& svg
+        ) = 0;
+
+        virtual void PushRouteResponse(
+            int request_id,
+            double total_time,
+            json::Array items
         ) = 0;
 
         virtual void PushNotFoundResponse(int request_id) = 0;
@@ -58,6 +65,12 @@ namespace domain {
         void PushMapResponse(
             int request_id,
             const svg::Document& svg
+        ) override;
+
+        void PushRouteResponse(
+            int request_id,
+            double total_time,
+            json::Array items
         ) override;
 
         void PushNotFoundResponse(int request_id) override;

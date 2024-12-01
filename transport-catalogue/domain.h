@@ -59,6 +59,8 @@ namespace domain {
 
         bool IsMap() const;
 
+        bool IsRoute() const;
+
         const json::Node* GetNode() const;
 
     protected:

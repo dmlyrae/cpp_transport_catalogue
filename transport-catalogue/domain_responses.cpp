@@ -2,6 +2,7 @@
 #include <set>
 
 #include "domain_responses.h"
+#include "domain_transport.h"
 #include "json.h"
 #include "json_builder.h"
 #include "svg.h"
@@ -102,6 +103,27 @@ namespace domain {
                 .EndDict()
                 .Build()
 
+        );
+    }
+
+    void JsonResponses::PushRouteResponse(
+        int request_id,
+        double total_time,
+        json::Array items
+    ) {
+        json::Dict result;
+        result["request_id"] = request_id;
+        responses_.push_back(
+            json::Builder{}
+                .StartDict()
+                    .Key("request_id")
+                    .Value(request_id)
+                    .Key("total_time")
+                    .Value(total_time)
+                    .Key("items")
+                    .Value(items)
+                .EndDict()
+                .Build()
         );
     }
 

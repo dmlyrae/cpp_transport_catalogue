@@ -40,4 +40,10 @@ namespace domain {
         int GetBusVelocity() const; 
     };
 
+    /* Действие пассажира */
+    class PassengerAction : public BaseEntity {
+    public:
+        using BaseEntity::BaseEntity;
+    };
+
 }

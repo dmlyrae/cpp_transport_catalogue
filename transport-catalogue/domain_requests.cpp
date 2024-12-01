@@ -111,7 +111,8 @@ namespace domain {
     void JsonRequests::FillStatResponses(
         domain::IStatResponses& responses, 
         const Transport::Catalogue& catalogue,
-        const Render::RoutesMap& routes_map
+        const Render::RoutesMap& routes_map,
+        const Transport::RouterA& router
     ) const {
         using namespace std::literals;
         std::vector<domain::Stat> stat_requests = GetStats();
@@ -149,9 +150,32 @@ namespace domain {
                     result_svg
                 );
                 continue;
+            } else if (type == "Route") {
+                const std::string from_stop = request.GetNode()->AsDict().at("from").AsString();
+                const std::string to_stop = request.GetNode()->AsDict().at("to").AsString();
+                std::optional<graph::Router<double>::RouteInfo> route = router.FindRoute(from_stop, to_stop);
+                if (!route) {
+                    std::cout << "not found" << std::endl;
+                    responses.PushNotFoundResponse(request_id);
+                    continue;
+                }
+                const std::pair<std::vector<domain::PassengerAction>, double> route_info = router.GetRoute(route.value());
+                json::Array items;
+                for(auto item : route_info.first) {
+                    items.push_back(*item.GetNode());
+                }
+                responses.PushRouteResponse(
+                    request.GetRequestId(),
+                    route_info.second,
+                    items
+                );
+                continue;
             }
             responses.PushNotFoundResponse(request_id);
         }
     }
+
+    void JsonRequests::FillRouterSettings(Transport::RouterA& router) const {
+    };
 
 }
