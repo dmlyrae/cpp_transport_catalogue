@@ -28,7 +28,7 @@ const graph::DirectedWeightedGraph<double>& RouterA::BuildGraph(const Transport:
 		all_buses.end(),
 		[&stops_graph, this, &catalogue](const auto& item) {
 			// item - это std::pair<const std::string_view, std::shared_ptr<Bus>>
-			const std::string_view& key = item.first; // Ключ
+			// const std::string_view& key = item.first; // Ключ
 			const std::shared_ptr<Bus>& busPtr = item.second; // Указатель на Bus
 			auto routeIt = busPtr->begin();
 			std::vector<std::shared_ptr<Stop>> stops;

@@ -5,10 +5,6 @@
 #include <sstream>
 
 #include "domain.h"
-#include "domain_render.h"
-#include "domain_responses.h"
-#include "domain_requests.h"
-#include "domain_transport.h"
 #include "map_renderer.h"
 #include "request_handler.h"
 #include "svg.h"
