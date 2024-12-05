@@ -13,7 +13,6 @@
 #include "transport_router.h"
 
 namespace domain {
-
     /*
     * Общие методы сущностей
     */
@@ -51,9 +50,7 @@ namespace domain {
 
 } // end domain
 
-
 namespace domain {
-
     /*
     * Сущность "Автобус"
     */
@@ -403,7 +400,7 @@ namespace domain {
         domain::IStatResponses& responses, 
         const Transport::Catalogue& catalogue,
         const Render::RoutesMap& routes_map,
-        const Transport::RouterA& router
+        const Transport::Router& router
     ) const {
         using namespace std::literals;
         std::vector<domain::Stat> stat_requests = GetStats();

@@ -23,7 +23,7 @@ namespace RequestHandler {
         const domain::IRequests* request_ptr, 
         Transport::Catalogue catalogue, 
         Render::RoutesMap routes_map,
-        const Transport::RouterA& router
+        const Transport::Router& router
     ) {
         static_assert(std::is_base_of<domain::IStatResponses, T>::value, "T must inherit from IStatResponses");
         T stat_responses;
@@ -31,6 +31,6 @@ namespace RequestHandler {
         return stat_responses;
     };
 
-    Transport::RouterA CreateRouter(domain::IRequests* requests_ptr, Transport::Catalogue catalogue);
+    Transport::Router CreateRouter(domain::IRequests* requests_ptr, Transport::Catalogue* catalogue);
 
 } // end RequestHandler 

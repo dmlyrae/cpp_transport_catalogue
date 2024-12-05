@@ -214,7 +214,7 @@ namespace Transport {
     class Stop;
     class Bus;
     class Catalogue;
-    class RouterA;
+    class Router;
 }
 
 namespace domain {
@@ -237,7 +237,7 @@ namespace domain {
             domain::IStatResponses& responses, 
             const Transport::Catalogue& catalogue,
             const Render::RoutesMap& routes_map,
-            const Transport::RouterA& router
+            const Transport::Router& router
         ) const = 0;
         virtual ~IRequests() = default;
     };
@@ -258,7 +258,7 @@ namespace domain {
             domain::IStatResponses& responses, 
             const Transport::Catalogue& catalogue,
             const Render::RoutesMap& routes_map,
-            const Transport::RouterA& router
+            const Transport::Router& router
         ) const override;
 
     private:

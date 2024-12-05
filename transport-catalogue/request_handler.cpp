@@ -20,9 +20,9 @@ namespace RequestHandler {
         return { requests_ptr };
     }
 
-    Transport::RouterA CreateRouter(domain::IRequests* requests_ptr, Transport::Catalogue catalogue) {
+    Transport::Router CreateRouter(domain::IRequests* requests_ptr, Transport::Catalogue* catalogue) {
         domain::RouterSettings settings = requests_ptr->GetRouterSettings();
-        Transport::RouterA router = Transport::RouterCreator()
+        Transport::Router router = Transport::RouterCreator()
             .SetCatalogue(catalogue)
             .SetSettings(settings)
             .Build();

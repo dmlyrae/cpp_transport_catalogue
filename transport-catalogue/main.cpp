@@ -14,11 +14,10 @@
 using namespace std;
 
 int main() {
-
     domain::JsonRequests requests(std::cin);
     Transport::Catalogue catalogue = RequestHandler::CreateCatalogue(&requests);
     Render::RoutesMap routes_map = RequestHandler::CreateRoutesMap(&requests);
-    Transport::RouterA router = RequestHandler::CreateRouter(&requests, catalogue);
+    Transport::Router router = RequestHandler::CreateRouter(&requests, &catalogue);
     domain::JsonResponses responses = RequestHandler::CreateResponses<domain::JsonResponses>(&requests, catalogue, routes_map, router);
     responses.Print(std::cout);
 
